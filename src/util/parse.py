@@ -1,4 +1,4 @@
-from proto import QueryCurrRegionHttpRsp
+from src.util.proto import QueryCurrRegionHttpRsp
 from src.util.crypto import decrypt
 from urllib import parse
 import base64

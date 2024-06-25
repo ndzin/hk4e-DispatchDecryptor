@@ -20,7 +20,7 @@ def main():
         curParse(args.url, data, int(key_id))
         formatted_cur, game_version, baixiao, version_res = curParse(args.url, data, key_id, args.baixiao)
 
-        if args.baixiao and not formatted_cur["retcode"] == 1 or formatted_cur["retcode"] == 20:
+        if not "retcode" in formatted_cur and args.baixiao == "True":
             saveData(baixiao, version_res)
         saveData(formatted_cur, game_version)
 
