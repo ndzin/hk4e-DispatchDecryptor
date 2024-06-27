@@ -17,7 +17,7 @@ py hk4e-dispatch.py --args
 Available arguments for now :
 
 ```
---baixiao True/False --url "<url>"
+--baixiao True/False --url "<url>" --out "<path>"
 ```
 The result will be saved on a JSON file called based on the Game Version, for example <b>OSRELWin4.7.0.json</b>.
 
