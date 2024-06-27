@@ -57,7 +57,7 @@ def curParse(url, data, key, bai=False):
             }
         }
         if (bai):
-            version_res = f"{version}-baixiao.json"
+            version_res = f"{version}-resInfo.json"
             baixiao = {
                 f"{cur.region_info.res_version_config.branch}": {
                     "full": {},

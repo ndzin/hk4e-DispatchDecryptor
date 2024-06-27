@@ -24,6 +24,7 @@ The result will be saved on a JSON file called based on the Game Version, for ex
 ## To Do:
 <h4 align="left">
 
+- [x] Add support for path from output.
 - [ ] Add support for base64 only response. 
-- [ ] Add support for dispatchSeed and Region decryption
+- [ ] Add support for dispatchSeed and Region decryption.
 </h4>

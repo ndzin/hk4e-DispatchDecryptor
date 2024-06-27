@@ -1,6 +1,7 @@
 from urllib import parse
 from urllib.request import urlopen
 import json
+import os
 
 def dataURL(url):
     lang = int(parse.parse_qs(parse.urlparse(url).query)['lang'][0])
@@ -11,7 +12,9 @@ def dataURL(url):
     key_id = int(parse.parse_qs(parse.urlparse(url).query)['key_id'][0])
     return data, key_id
 
-def saveData(data, game_version):
+def saveData(data, game_version, path=""):
     print(f"Saving {game_version}...")
-    with open(game_version, 'w') as f:
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open(path+game_version, 'w') as f:
         json.dump(data, f, indent=4)

@@ -1,2 +1,5 @@
 *.json
 __pycache__/
+*.pyc
+out/
+*.bat
