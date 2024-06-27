@@ -22,9 +22,9 @@ def main():
         formatted_cur, game_version, baixiao, version_res = curParse(args.url, data, key_id, args.res)
 
         if args.out:
-            saveData(formatted_cur, game_version, args.out)
+            saveData(formatted_cur, game_version, f"{args.out}/")
             if not "retcode" in formatted_cur and args.res == True:
-                saveData(baixiao, version_res, args.out)
+                saveData(baixiao, version_res, f"{args.out}/")
         else:
              saveData(formatted_cur, game_version, "out/")
              if not "retcode" in formatted_cur and args.res == True:

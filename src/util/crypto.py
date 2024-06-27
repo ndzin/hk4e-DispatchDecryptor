@@ -5,7 +5,7 @@ from Crypto.Hash import SHA256
 import os
 
 keys = {}
-path = "keys"
+path = "src\keys"
 
 def keyLoad(key_id):
     with open(os.path.join(path, f"{key_id}.pem"), 'r') as f:
