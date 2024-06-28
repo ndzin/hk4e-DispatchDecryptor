@@ -3,7 +3,7 @@ import base64
 from .crypto import HoyoCrypt
 from .proto import QueryCurrRegionHttpRsp
 
-def parse_cur(url, url_info):
+def parse_cur(url_info):
     # Parse cur logic
     crypt = HoyoCrypt()
     decrypted = crypt.decrypt(base64.b64decode(url_info['data']['content']), url_info['key_id'])
@@ -55,6 +55,31 @@ def parse_cur(url, url_info):
                 "nextResVersionConfig": {}
             }
         }
+
+
+def parse_baixiao(parsed_cur):
+    return {
+                    f"{parsed_cur['regionInfo']['resVersionConfig']['branch']}": {
+                        "full": {},
+                        "hdiff": {},
+                        "resource_info": [
+                            {
+                                "res": {
+                                    "version": parsed_cur['regionInfo']['resVersionConfig']['version'],
+                                    "suffix": parsed_cur['regionInfo']['resVersionConfig']['versionSuffix']
+                                },
+                                "client": {
+                                    "version": parsed_cur['regionInfo']['clientDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientVersionSuffix'],
+                                },
+                                "silence": {
+                                    "version": parsed_cur['regionInfo']['clientSilenceDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientSilenceVersionSuffix']
+                                }
+                            }
+                        ]
+                    }
+                }
     
 
 def parse_url(url):

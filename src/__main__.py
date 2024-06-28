@@ -5,7 +5,7 @@ import requests
 
 from rich import print, print_json
 
-from .utils.parser import parse_url, parse_cur
+from .utils.parser import parse_url, parse_cur, parse_baixiao
 
 def url_data(url):
     return requests.get(url).json()
@@ -31,35 +31,13 @@ def main(args, mode):
             url_info = parse_url(args.source)
             url_info["data"] = url_data(url_info['fixed'])
             
-            parsed_cur = parse_cur(args.source, url_info)
+            parsed_cur = parse_cur(url_info)
 
             if args.print:
                 print_json(data=parsed_cur)
             
             if args.baixiao:
-                baixiao_cur = {
-                    f"{parsed_cur['regionInfo']['resVersionConfig']['branch']}": {
-                        "full": {},
-                        "hdiff": {},
-                        "resource_info": [
-                            {
-                                "res": {
-                                    "version": parsed_cur['regionInfo']['resVersionConfig']['version'],
-                                    "suffix": parsed_cur['regionInfo']['resVersionConfig']['versionSuffix']
-                                },
-                                "client": {
-                                    "version": parsed_cur['regionInfo']['clientDataVersion'],
-                                    "suffix": parsed_cur['regionInfo']['clientVersionSuffix'],
-                                },
-                                "silence": {
-                                    "version": parsed_cur['regionInfo']['clientSilenceDataVersion'],
-                                    "suffix": parsed_cur['regionInfo']['clientSilenceVersionSuffix']
-                                }
-                            }
-                        ]
-                    }
-                }
-                save_data(baixiao_cur, os.path.join(output, f"{url_info['version']}-baixiao.json"))
+                save_data(parse_baixiao(parsed_cur), os.path.join(output, f"{url_info['version']}-baixiao.json"))
             
             save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
 
@@ -68,35 +46,13 @@ def main(args, mode):
             with open(args.source, "r") as file:
                 data = json.loads(file.read())
             
-            parsed_cur = parse_cur("file", data)
+            parsed_cur = parse_cur(data)
 
             if args.print:
                 print_json(data=parsed_cur)
             
             if args.baixiao:
-                baixiao_cur = {
-                    f"{parsed_cur['regionInfo']['resVersionConfig']['branch']}": {
-                        "full": {},
-                        "hdiff": {},
-                        "resource_info": [
-                            {
-                                "res": {
-                                    "version": parsed_cur['regionInfo']['resVersionConfig']['version'],
-                                    "suffix": parsed_cur['regionInfo']['resVersionConfig']['versionSuffix']
-                                },
-                                "client": {
-                                    "version": parsed_cur['regionInfo']['clientDataVersion'],
-                                    "suffix": parsed_cur['regionInfo']['clientVersionSuffix'],
-                                },
-                                "silence": {
-                                    "version": parsed_cur['regionInfo']['clientSilenceDataVersion'],
-                                    "suffix": parsed_cur['regionInfo']['clientSilenceVersionSuffix']
-                                }
-                            }
-                        ]
-                    }
-                }
-                save_data(baixiao_cur, os.path.join(output, f"{url_info['version']}-baixiao.json"))
+                save_data(parse_baixiao(parsed_cur), os.path.join(output, f"{url_info['version']}-baixiao.json"))
             
             save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
 
