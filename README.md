@@ -36,7 +36,7 @@ python -m src <url> <options>
 <h4 align="left"> Base64 response: (Soon™)</h4>
 
 > [!CAUTION]  
-> File needs to be *just* the pure base64 response.
+> File needs to be the entire response (including "{content:<...>" and sign:<...>})
 
 ```
 python -m src <path/to/file> <options>
