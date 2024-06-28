@@ -8,11 +8,7 @@ from rich import print, print_json
 from .utils.parser import parse_url, parse_cur
 
 def url_data(url):
-    # I'll return the pre-made data because no internet for now
-    with open(os.path.join(os.path.abspath(os.curdir), "notes", "response.txt"), "r") as f:
-        data = json.loads(f.read())
-    return data
-    # return requests.get(url).json()
+    return requests.get(url).json()
 
 def parse_args()    :
     parser = argparse.ArgumentParser(prog="Dispatch Decryptor", description="🌐 HK4E dispatch response decryptor")
