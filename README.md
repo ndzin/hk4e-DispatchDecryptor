@@ -33,7 +33,7 @@ pip install -r requirements.txt
 python -m src <url> <options>
 ```
 
-<h4 align="left"> Base64 response: (Soon™)</h4>
+<h4 align="left"> Base64 response file:</h4>
 
 > [!CAUTION]  
 > File needs to be the entire response (including "{content:<...>" and sign:<...>})
@@ -41,6 +41,14 @@ python -m src <url> <options>
 ```
 python -m src <path/to/file> <options>
 ```
+
+<h4 align="left"> Options: </h4>
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `-o` `--output` <path> | Output path for the decrypted response | ./output |
+| `-p` `--print` | Print the decrypted response to the console | False |
+| `--baixiao` | Parse version-res for Baixiao | False |
 
 
 <h2 align="center"> ─── </h2>
