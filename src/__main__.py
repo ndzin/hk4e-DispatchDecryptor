@@ -25,20 +25,7 @@ def save_data(data, path):
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
 
-def main():
-    root = os.path.abspath(os.path.curdir)
-    output = os.path.join(root, "output")
-
-    if not os.path.exists(output):
-        os.makedirs(output, exist_ok=True)
-
-    args = parse_args()
-    # detect if the source is a URL or a file path
-    if os.path.exists(args.source):
-        mode = "file"
-    else:
-        mode = "url"
-
+def main(args, mode):
     match mode:
         case "url":
             url_info = parse_url(args.source)
@@ -47,7 +34,6 @@ def main():
             parsed_cur = parse_cur(args.source, url_info)
 
             if args.print:
-                print("Cur:")
                 print_json(data=parsed_cur)
             
             if args.baixiao:
@@ -76,19 +62,62 @@ def main():
                 save_data(baixiao_cur, os.path.join(output, f"{url_info['version']}-baixiao.json"))
             
             save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
-            # print_json(data=url_info)
-            # print_json(data=data)
-            pass
+
+
         case "file":
             with open(args.source, "r") as file:
                 data = json.loads(file.read())
             
             parsed_cur = parse_cur("file", data)
-            pass
+
+            if args.print:
+                print_json(data=parsed_cur)
+            
+            if args.baixiao:
+                baixiao_cur = {
+                    f"{parsed_cur['regionInfo']['resVersionConfig']['branch']}": {
+                        "full": {},
+                        "hdiff": {},
+                        "resource_info": [
+                            {
+                                "res": {
+                                    "version": parsed_cur['regionInfo']['resVersionConfig']['version'],
+                                    "suffix": parsed_cur['regionInfo']['resVersionConfig']['versionSuffix']
+                                },
+                                "client": {
+                                    "version": parsed_cur['regionInfo']['clientDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientVersionSuffix'],
+                                },
+                                "silence": {
+                                    "version": parsed_cur['regionInfo']['clientSilenceDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientSilenceVersionSuffix']
+                                }
+                            }
+                        ]
+                    }
+                }
+                save_data(baixiao_cur, os.path.join(output, f"{url_info['version']}-baixiao.json"))
+            
+            save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
+
+
         case _:
             print(f"[bold red]Uh oh... this shouldn't have happened![/]\n [grey] mode: {mode}[/]")
+            exit()
 
-    pass
 
 if __name__ == "__main__":
-    main()
+    root = os.path.abspath(os.path.curdir)
+    output = os.path.join(root, "output")
+
+    if not os.path.exists(output):
+        os.makedirs(output, exist_ok=True)
+    
+    args = parse_args()
+
+    if os.path.exists(args.source):
+        mode = "file"
+    else:
+        mode = "url"
+    
+    main(args, mode)

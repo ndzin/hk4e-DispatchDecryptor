@@ -1,16 +1,9 @@
 import base64
 
-from rich import print, print_json
-
 from .crypto import HoyoCrypt
 from .proto import QueryCurrRegionHttpRsp
 
 def parse_cur(url, url_info):
-    if "file" in url:
-        game_version = "file" # change to include file name soon
-    else:
-        game_version = parse_url(url)['version']
-
     # Parse cur logic
     crypt = HoyoCrypt()
     decrypted = crypt.decrypt(base64.b64decode(url_info['data']['content']), url_info['key_id'])
