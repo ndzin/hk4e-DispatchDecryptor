@@ -40,6 +40,7 @@ def main(args, mode):
                 save_data(parse_baixiao(parsed_cur), os.path.join(output, f"{url_info['version']}-baixiao.json"))
             
             save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
+            print(f"[bold white]• hk4e-dispatch: [bold green]Decrypted response saved to [italic]\"{os.path.join(output, f'{url_info['version']}.json\"')}[/]")
 
 
         case "file":
@@ -55,10 +56,11 @@ def main(args, mode):
                 save_data(parse_baixiao(parsed_cur), os.path.join(output, f"{url_info['version']}-baixiao.json"))
             
             save_data(parsed_cur, os.path.join(output, f"{url_info['version']}.json"))
+            print(f"[bold white]• hk4e-dispatch: [bold green]Decrypted response saved to [italic]\"{os.path.join(output, f'{url_info['version']}.json\"')}[/]")
 
 
         case _:
-            print(f"[bold red]Uh oh... this shouldn't have happened![/]\n [grey] mode: {mode}[/]")
+            print(f"[bold white]• hk4e-dispatch: [bold red]Uh oh... this shouldn't have happened![/]\n [grey] mode: {mode}[/]")
             exit()
 
 
