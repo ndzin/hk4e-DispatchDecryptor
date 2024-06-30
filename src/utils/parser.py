@@ -1,33 +1,32 @@
-from src.util.proto import QueryCurrRegionHttpRsp
-from src.util.crypto import decrypt
-from urllib import parse
 import base64
 
-def curParse(url, data, key, bai=False):
-    decrypted = decrypt(base64.b64decode(data['content']), key)
+from .crypto import HoyoCrypt
+from .proto import QueryCurrRegionHttpRsp
+
+def parse_cur(url_info):
+    # Parse cur logic
+    crypt = HoyoCrypt()
+    decrypted = crypt.decrypt(base64.b64decode(url_info['data']['content']), url_info['key_id'])
+
     cur = QueryCurrRegionHttpRsp().parse(decrypted)
     cur.region_custom_config_encrypted = b''
     cur.client_secret_key = b''
     cur.region_info.res_version_config.md5 = ""
     cur.region_info.secret_key = b''
     cur.region_info.next_res_version_config.md5 = ""
-    
-    version = parse.parse_qs(parse.urlparse(url).query).get('version', [''])[0]
-
-    game_version = f"{version}.json"
 
     if cur.retcode == 20 or cur.retcode == 1:
-        formatted_cur = {
+        return {
             "retcode": cur.retcode,
             "msg": cur.msg,
             "regionInfo": {
                 "resVersionConfig": {},
                 "nextResVersionConfig": {}
             },
-            "forceUdpate": {}
+            "forceUpdate": {}
         }
     else:
-        formatted_cur = {
+        return {
             "regionInfo": {
                 "gateserverIp": cur.region_info.gateserver_ip,
                 "gateserverPort": cur.region_info.gateserver_port,
@@ -56,30 +55,52 @@ def curParse(url, data, key, bai=False):
                 "nextResVersionConfig": {}
             }
         }
-        if (bai):
-            version_res = f"{version}-resInfo.json"
-            baixiao = {
-                f"{cur.region_info.res_version_config.branch}": {
-                    "full": {},
-                    "hdiff": {},
-                    "resource_info": [
-                        {
-                            "res": {
-                                "version": cur.region_info.res_version_config.version,
-                                "suffix": cur.region_info.res_version_config.version_suffix
-                            },
-                            "client": {
-                                "version": cur.region_info.client_data_version,
-                                "suffix": cur.region_info.client_version_suffix
-                            },
-                            "silence": {
-                                "version": cur.region_info.client_silence_data_version,
-                                "suffix": cur.region_info.client_silence_version_suffix
+
+
+def parse_baixiao(parsed_cur):
+    return {
+                    f"{parsed_cur['regionInfo']['resVersionConfig']['branch']}": {
+                        "full": {},
+                        "hdiff": {},
+                        "resource_info": [
+                            {
+                                "res": {
+                                    "version": parsed_cur['regionInfo']['resVersionConfig']['version'],
+                                    "suffix": parsed_cur['regionInfo']['resVersionConfig']['versionSuffix']
+                                },
+                                "client": {
+                                    "version": parsed_cur['regionInfo']['clientDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientVersionSuffix'],
+                                },
+                                "silence": {
+                                    "version": parsed_cur['regionInfo']['clientSilenceDataVersion'],
+                                    "suffix": parsed_cur['regionInfo']['clientSilenceVersionSuffix']
+                                }
                             }
-                        }
-                    ]
+                        ]
+                    }
                 }
-            }
-            return(formatted_cur, game_version, baixiao, version_res)
-        
-    return(formatted_cur, game_version, None, None)
+    
+
+def parse_url(url):
+    url = url.split("?")
+    base_url = url[0]
+    url_args = url[1].split("&")
+    
+    for i, arg in enumerate(url_args):
+        if "lang=" in arg:
+            if arg.split("=")[1] != "1":
+                url_args[i] = "lang=1"
+
+        if "key_id=" in arg:
+            key_id = arg.split("=")[1]
+
+        if "version=" in arg:
+            version = arg.split("=")[1]
+
+    reconstructed_url = base_url + "?" + "&".join(url_args)
+    return {
+        "fixed": reconstructed_url,
+        "key_id": key_id,
+        "version": version
+    }

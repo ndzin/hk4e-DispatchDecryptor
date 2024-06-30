@@ -1,30 +1,68 @@
-# hk4e-Dispatch Decryptor
-A Dispatch Response Decryptor for a <i>certain Anime Game.</i>
+<div align="center">
 
+[//]: # "Header"
 
-## Usage:
-<h4 align="left"> Install dependencies: </h4>
+<h1> ୧ ‧₊˚ 🎆 ⋅ ☆ </h1>
+
+<h3> Dispatch Decryptor </h3>
+<p> 🌐 HK4E dispatch response decryptor. </p>
+
+<img height="200" src="https://placehold.co/200x200"/>
+
+</div>
+
+[//]: # "Main Content"
+
+###
+
+<h2 align="left"> Usage: </h2>
+
+<h4 align="left"> Install requirements: </h4>
 
 ```
 pip install -r requirements.txt 
 ```
-<h4 align="left"> How to run: </h4>
+
+
+<h4 align="left"> With URL: </h4>
+
+> [!CAUTION]  
+> If you're gonna use the URL, it needs to be the current one. Otherwise there will be no response and the program will fail.
 
 ```
-py hk4e-dispatch.py --args
+python -m src <url> <options>
 ```
 
-Available arguments for now :
+<h4 align="left"> Base64 response file:</h4>
+
+> [!CAUTION]  
+> File needs to be the entire response (including "{content:<...>" and sign:<...>})
 
 ```
---baixiao True/False --url "<url>"
+python -m src <path/to/file> <options>
 ```
-The result will be saved on a JSON file called based on the Game Version, for example <b>OSRELWin4.7.0.json</b>.
 
-## To Do:
-<h4 align="left">
+<h4 align="left"> Options: </h4>
 
-- [x] Add support for path from output.
-- [ ] Add support for base64 only response. 
-- [ ] Add support for dispatchSeed and Region decryption.
+| Option | Description | Default |
+| --- | --- | --- |
+| `-o` `--output` <path> | Output path for the decrypted response | ./output |
+| `-p` `--print` | Print the decrypted response to the console | False |
+| `--baixiao` | Parse version-res for Baixiao | False |
+
+
+<h2 align="center"> ─── </h2>
+
+###
+
+<div align="center">
+
+[//]: # "Footer"
+
+<h4>Otaku tech world the save!<br>
+    - severyoHo
 </h4>
+
+<h2>───</h2>
+
+</div>

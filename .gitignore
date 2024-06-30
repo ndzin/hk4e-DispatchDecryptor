@@ -1,8 +1,10 @@
 *.json
 __pycache__/
-*.pyc
-out/
-*.bat
-*.exe
-dist/
-build/
+/.venv
+/.vscode
+/notes
+/output
+bin/*
+bin
+dist
+build
