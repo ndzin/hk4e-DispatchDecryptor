@@ -62,7 +62,7 @@ python -m src <path/to/file> <options>
 <h4>Otaku tech world the save!<br>
     - severyoHo
 </h4>
-
+Created by me and @ladyfoxpoint
 <h2>───</h2>
 
 </div>
